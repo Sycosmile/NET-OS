@@ -2,9 +2,75 @@
 <html>
 <head>
     <title>Net-OS Dashboard</title>
+    <style>
+        body { font-family: monospace; background: #10131a; color: #e6e6e6; padding: 2rem; }
+        h1 { color: #62d196; }
+        .card { background: #1a1f29; border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1rem; }
+        .label { color: #8b96a5; font-size: 0.8rem; text-transform: uppercase; }
+        .value { font-size: 1.4rem; font-weight: bold; }
+        .ok { color: #62d196; }
+        .warn { color: #f0a35a; }
+        .bad { color: #f06060; }
+    </style>
 </head>
 <body>
     <h1>Net-OS Control Panel</h1>
-    <p>Status: Active</p>
+    <div class="card">
+        <div class="label">Overall Status</div>
+        <div class="value" id="overall">loading...</div>
+    </div>
+    <div class="card">
+        <div class="label">CPU</div>
+        <div class="value" id="cpu">-</div>
+    </div>
+    <div class="card">
+        <div class="label">Memory</div>
+        <div class="value" id="memory">-</div>
+    </div>
+    <div class="card">
+        <div class="label">Strategy</div>
+        <div class="value" id="strategy">-</div>
+    </div>
+    <div class="card">
+        <div class="label">Load Prediction</div>
+        <div class="value" id="prediction">-</div>
+    </div>
+
+    <script>
+        function statusClass(s) {
+            if (s === "critical" || s === "high") return "bad";
+            if (s === "degraded") return "warn";
+            return "ok";
+        }
+
+        async function refresh() {
+            try {
+                const health = await (await fetch("/api/health")).json();
+                const strategy = await (await fetch("/api/strategy")).json();
+                const prediction = await (await fetch("/api/predict")).json();
+
+                document.getElementById("overall").textContent = health.overall;
+                document.getElementById("overall").className = "value " + statusClass(health.overall);
+
+                document.getElementById("cpu").textContent =
+                    health.cpu_percent.toFixed(1) + "% (" + health.cpu + ")";
+                document.getElementById("cpu").className = "value " + statusClass(health.cpu);
+
+                document.getElementById("memory").textContent =
+                    health.memory_percent.toFixed(1) + "% (" + health.memory + ")";
+                document.getElementById("memory").className = "value " + statusClass(health.memory);
+
+                document.getElementById("strategy").textContent =
+                    strategy.strategy + " (" + strategy.mode + ")";
+
+                document.getElementById("prediction").textContent = prediction.prediction;
+            } catch (e) {
+                document.getElementById("overall").textContent = "unreachable";
+            }
+        }
+
+        refresh();
+        setInterval(refresh, 5000);
+    </script>
 </body>
 </html>

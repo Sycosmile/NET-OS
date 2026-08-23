@@ -55,8 +55,8 @@ Think of it as a **miniature self-healing network brain** — built entirely in 
 ### Run Locally
 
 ```bash
-git clone https://github.com/Sycosmile/net-os.git
-cd net-os
+git clone https://github.com/Sycosmile/NET-OS.git
+cd NET-OS
 pip install -r requirements.txt
 cp .env.example .env
 uvicorn app.main:app --reload
@@ -80,8 +80,14 @@ That's it. Everything spins up automatically.
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/` | System status overview |
-| GET | `/health` | Health check & diagnostics |
-| GET | `/engine` | Core engine status |
+| GET | `/api/health` | Live CPU/memory health snapshot, classified as normal/high/critical |
+| GET | `/api/strategy` | Current operating strategy, derived from health + load trend |
+| GET | `/api/predict` | Load trend prediction (rising/falling/stable) from recent history |
+| GET | `/api/behavior` | Anomaly check — flags the current reading against a rolling baseline |
+| GET | `/api/engine` | Triggers one full engine tick and returns the combined result |
+| GET | `/api/history?limit=N` | Recent stored metrics and events |
+| POST | `/api/route` | Simulates routing a packet under the current strategy |
+| GET | `/dashboard/` | Live dashboard (polls the API every 5s) |
 
 Full interactive API docs available at `http://localhost:8000/docs`
 
