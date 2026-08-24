@@ -8,8 +8,8 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-powered-teal?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Docker](https://img.shields.io/badge/Docker-ready-blue?style=flat-square&logo=docker)](https://docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/Sycosmile/net-os?style=flat-square)](https://github.com/Sycosmile/net-os/commits)
-[![Stars](https://img.shields.io/github/stars/Sycosmile/net-os?style=flat-square)](https://github.com/Sycosmile/net-os/stargazers)
+[![Last Commit](https://img.shields.io/github/last-commit/Sycosmile/NET-OS?style=flat-square)](https://github.com/Sycosmile/NET-OS/commits)
+[![Stars](https://img.shields.io/github/stars/Sycosmile/NET-OS?style=flat-square)](https://github.com/Sycosmile/NET-OS/stargazers)
 
 > 🧠 **What if your network could think for itself?** NET-OS is a simulation of an autonomous OS that monitors its own health, predicts behavior, and adapts its strategy — no human intervention needed.
 
@@ -93,6 +93,14 @@ Full interactive API docs available at `http://localhost:8000/docs`
 
 ---
 
+## 📊 Live Dashboard
+
+Real data pulled from the actually-running app (`/api/health`, `/api/strategy`, `/api/predict`):
+
+![NET-OS live dashboard](./net-os-dashboard-demo.png)
+
+---
+
 ## 🔄 How It Works
 
 Boot          →   Engine initializes, loads persistent memory from SQLite
@@ -156,9 +164,10 @@ net-os/
 
 ## 🗺️ Roadmap
 
+- [x] Statistical anomaly detection (z-score against rolling baseline)
+- [ ] ML-based anomaly detection (upgrade from the current statistical approach)
 - [ ] WebSocket support for real-time dashboard updates
 - [ ] Multi-node simulation (multiple NET-OS instances communicating)
-- [ ] Anomaly detection with ML-based pattern recognition
 - [ ] Prometheus + Grafana metrics integration
 - [ ] CLI interface for headless environments
 - [ ] Alert system (Telegram / Slack notifications on anomalies)
